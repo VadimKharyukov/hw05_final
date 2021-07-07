@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Об авторе проекта{% endblock %}
+{% block content %}
+  <div class="row">
+    <!-- Левый вспомогательный блок -->
+    <div class="col-md-3 mb-3 mt-1">
+      <div class="card">
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="h3">
+                Об авторе
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="h6 text-muted">
+                Пару слов о...
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Тело страницы -->
+    <div class="col-md-9">
+      <div class="card-body">
+        <div class="card-text">
+          <p align="left">Доброе время суток! Вы зашли на страницу обо мне. Писать о себе просто так не люблю,
+              проще отвечать на вопросы.Поэтому напишу кратко.
+              Меня зовут Вадим Харюков.Пришел в мир программирования по своей идее, ну и плюс есть определенная тяга
+              к IT сфере.<br><b>На самом деле путь тернист!но путник идущий своей дорогой,пройдет любой путь!</b><br>Эта картинка
+              давно идет со мной,не могу ее оставить)
+              <br>
+          </p>
+            {% load static %} <img src="{% static "koshka.jpg" %}" alt="koshka"/>
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

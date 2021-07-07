@@ -1,0 +1,40 @@
+<!-- templates/about/author.html -->
+{% extends "base.html" %}
+{% block title %}технологии{% endblock %}
+{% block content %}
+    {% load static %}
+  <div class="row">
+    <!-- Левый вспомогательный блок -->
+    <div class="col-md-3 mb-3 mt-1">
+      <div class="card">
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="h3">
+                Технологии
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="h6 text-muted">
+                Пару слов о...
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Тело страницы -->
+    <div class="col-md-9">
+      <div class="card-body">
+        <div class="card-text">
+          <p align="left">Этот сайт мне помогли создать команда Яндекс Практикума и 18 когорта учеников, без них была б беда!
+          Великий и могучий "Окей ..." ну и компьютер с установленным программным обеспечением.Писать о навыках
+          в самый разгар обучения... лучше это оставить на окончание обучение!
+              <br>Вся работа впереди!<br>Нас ждут великие дела!
+
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
