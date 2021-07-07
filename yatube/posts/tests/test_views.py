@@ -159,9 +159,9 @@ class TestCache(TestCase):
     def cache_index(self):
         cache.clear()
         Post.objects.create(
-                text='test text',
-                author=self.user
-            )
+            text='test text',
+            author=self.user
+        )
         self.authorized_user.get(reverse('index'))
         response = self.authorized_user.get(reverse('index'))
         self.assertEqual(response.context, None)
