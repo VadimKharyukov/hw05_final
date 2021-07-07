@@ -83,6 +83,8 @@ def new_post(request):
 
 @login_required
 def edit_post(request, username, post_id):
+    post_object = get_object_or_404(Post, id=post_id,
+                                    author__username=username)
     if request.user.username != username:
         return redirect('post', username=username, post_id=post_id)
     post = get_object_or_404(Post, id=post_id, author__username=username)
@@ -93,7 +95,9 @@ def edit_post(request, username, post_id):
         form.save()
         return redirect('post', username=username, post_id=post_id)
     return render(request, 'posts/new_post.html',
-                  {'form': form, 'rename': 'edit'})
+                  {'form': form,
+                   'rename': 'edit',
+                   'post_object': post_object})
 
 
 def page_not_found(request, exception):
@@ -123,7 +127,7 @@ def add_comment(request, username, post_id):
         comment.save()
         return redirect('post', username, post_id)
     return render(request, 'includes/comments.html',
-                  {'form': form, 'comments': comments})
+                  {'form': form, 'comments': comments, 'post': post})
 
 
 @login_required

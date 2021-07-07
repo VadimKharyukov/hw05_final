@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.core.cache import cache
 from http import HTTPStatus
 
-from ..models import Follow, Group, Post, User
+from ..models import Follow, Group, Comment, Post, User
 
 
 class ViewsTests(TestCase):
@@ -251,8 +251,8 @@ class TestComments(TestCase):
 
     def test_auth_user_can_comment_post(self):
         response = self.authorized_user.post(self.url_comment, {
-            'text': self.text}, follow=True)
-        self.assertContains(response, self.text)
+            'text': 'test comment'}, follow=True)
+        self.assertContains(response, 'test comment')
 
     def test_unauthorized_user_cant_comment_post(self):
         response = self.anonim.post(self.url_comment, {
