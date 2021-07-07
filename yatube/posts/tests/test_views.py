@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.core.cache import cache
 from http import HTTPStatus
 
-from ..models import Follow, Group, Comment, Post, User
+from ..models import Follow, Group, Post, User
 
 
 class ViewsTests(TestCase):
