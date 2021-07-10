@@ -10,7 +10,7 @@ from .models import Follow, Group, Post, User
 
 @cache_page(20)
 def index(request):
-    post_list = Post.objects.all()
+    post_list = Post.objects.select_related('author').all()
     paginator = Paginator(post_list, settings.PAGINATOR_YA)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -83,14 +83,14 @@ def new_post(request):
 
 @login_required
 def edit_post(request, username, post_id):
-    post_object = get_object_or_404(Post, id=post_id,
+    post_object = get_object_or_404(Post,
+                                    id=post_id,
                                     author__username=username)
     if request.user.username != username:
         return redirect('post', username=username, post_id=post_id)
-    post = get_object_or_404(Post, id=post_id, author__username=username)
     form = PostForm(request.POST or None,
                     files=request.FILES or None,
-                    instance=post)
+                    instance=post_object)
     if form.is_valid():
         form.save()
         return redirect('post', username=username, post_id=post_id)
@@ -103,14 +103,14 @@ def edit_post(request, username, post_id):
 def page_not_found(request, exception):
     return render(
         request,
-        "misc/404.html",
-        {"path": request.path},
+        'misc/404.html',
+        {'path': request.path},
         status=404
     )
 
 
 def server_error(request):
-    return render(request, "misc/500.html", status=500)
+    return render(request, 'misc/500.html', status=500)
 
 
 @login_required()
