@@ -2,13 +2,14 @@
 {% block title %} Просмотр записи {% endblock %}
 {% block content %}
 <main role="main" class="container">
+  <h2><i>Пост : {{ user.username }}</i></h2>
   <div class="row">
     <div class="col-md-3 mb-3 mt-1">
     {% include 'includes/class_a.html' %}
     </div>
     <div class="col-md-9">
      {% include 'includes/post_item.html' with post=post  image=image%}
-      {%  include 'includes/comments.html' %}
+      {% include "includes/comments.html" with post=post form=form comments=comments %}
     </div>
   </div>
 </main>

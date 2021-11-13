@@ -61,4 +61,4 @@ class TestPostImages(TestCase):
         for pathname in self.url_names:
             with self.subTest(pathname=pathname):
                 response = self.authorized_user.get(pathname)
-                self.assertContains(response, '<img')
+                self.assertContains(response, '<images')

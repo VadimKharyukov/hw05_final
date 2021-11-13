@@ -1,16 +1,25 @@
-from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import cache_page
 
-from .forms import CommentForm, PostForm
-from .models import Follow, Group, Post, User
+from .forms import CommentForm, PostForm, GroupForm
+from .models import Follow, Group, Post, User, Ip, Comment
+
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
 
 @cache_page(20)
 def index(request):
-    post_list = Post.objects.select_related('author').all()
+    post_list = Post.objects.select_related('group').all()
     paginator = Paginator(post_list, settings.PAGINATOR_YA)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -31,6 +40,26 @@ def group_posts(request, slug):
         'paginator': paginator
     }
     return render(request, 'group.html', context)
+
+
+def group_list(request):
+    group_lists = Group.objects.all()
+    paginator = Paginator(group_lists, settings.PAGINATOR_YA)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'posts/group_list.html', {
+        'group_list': group_lists, 'page': page, 'paginator': paginator})
+
+
+@login_required
+def group_create(request):
+    form = GroupForm(request.POST or None)
+    if request.method == 'GET' or not form.is_valid():
+        return render(request, 'posts/new_group.html',
+                      {'form': form})
+    group = form.save(commit=False)
+    group.save()
+    return redirect('group_list')
 
 
 def profile(request, username):
@@ -55,6 +84,12 @@ def profile(request, username):
 def post_view(request, username, post_id):
     post = get_object_or_404(Post.objects.select_related('author'),
                              id=post_id, author__username=username)
+    ip = get_client_ip(request)
+    if Ip.objects.filter(ip=ip).exists():
+        post.views.add(Ip.objects.get(ip=ip))
+    else:
+        Ip.objects.create(ip=ip)
+        post.views.add(Ip.objects.get(ip=ip))
     post_count = Post.objects.filter(author=post.author).count()
     form = CommentForm()
     comments = post.comments.all()
@@ -156,3 +191,20 @@ def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
     Follow.objects.filter(author=author).delete()
     return redirect('profile', username=username)
+
+
+@login_required
+def comment_delete(request, id):
+    comment = get_object_or_404(Comment, id=id)
+    if request.user == comment.author or request.user == comment.post.author:
+        comment.delete()
+    return redirect('post', username=comment.post.author,
+                    post_id=comment.post.id)
+
+
+@login_required
+def post_delete(request, id):
+    post = get_object_or_404(Post, id=id)
+    if request.user == post.author:
+        post.delete()
+        return redirect('profile', username=request.user)

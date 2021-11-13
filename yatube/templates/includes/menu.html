@@ -11,6 +11,11 @@
           Избранные авторы
         </a>
       </li>
+     <li class="nav-item">
+        <a class="nav-link {% if group_list %}active{% endif %}" href="{% url 'group_list' %}">
+          Сообщества
+        </a>
+      </li>
     </ul>
   </div>
 {% endif %}

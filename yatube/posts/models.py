@@ -1,13 +1,30 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import Q, F
 
 User = get_user_model()
 
 
+class Ip(models.Model):
+    ip = models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name_plural = 'Айпишки'
+        verbose_name = 'Афпишка'
+
+    def __str__(self):
+        return self.ip
+
+
 class Group(models.Model):
     title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, default='')
     description = models.TextField()
+
+    class Meta:
+        verbose_name_plural = 'Сообщества'
+        verbose_name = 'Сообщество'
+        ordering = ['title']
 
     def __str__(self) -> str:
         return self.title
@@ -21,12 +38,18 @@ class Post(models.Model):
     text = models.TextField()
     pub_date = models.DateTimeField('date published', auto_now_add=True)
     image = models.ImageField(upload_to='posts/', blank=True, null=True)
+    views = models.ManyToManyField(Ip, related_name='post_views', blank=True)
 
     class Meta:
-        ordering = ('-pub_date',)
+        ordering = ['-pub_date']
+        verbose_name_plural = 'Посты'
+        verbose_name = 'Пост'
 
     def __str__(self) -> str:
         return self.text[:15]
+
+    def total_views(self):
+        return self.views.count()
 
 
 class Comment(models.Model):
@@ -50,7 +73,12 @@ class Follow(models.Model):
                                on_delete=models.CASCADE)
 
     class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
         constraints = [
             models.UniqueConstraint(fields=('user', 'author'),
-                                    name='unique_list')
+                                    name='unique_list'),
+            models.CheckConstraint(
+                check=~Q(user=F('author')), name='author'
+            )
         ]

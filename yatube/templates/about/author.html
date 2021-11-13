@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Об авторе проекта{% endblock %}
 {% block content %}
   <div class="row">
@@ -32,7 +33,7 @@
               давно идет со мной,не могу ее оставить)
               <br>
           </p>
-            {% load static %} <img src="{% static "koshka.jpg" %}" alt="koshka"/>
+             <img src="{% static "images/koshka.jpg" %}" alt="koshka">
 
         </div>
       </div>

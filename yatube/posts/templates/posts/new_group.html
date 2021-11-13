@@ -1,22 +1,15 @@
 {% extends "base.html" %}
 {% block title %}
-    {% if rename == 'add' %}Добавить запись
-    {% elif rename == 'edit' %}Редактировать
-    {% endif %}
+    Создать новую группу
 {% endblock %}
 {% block content %}
   {% load user_filters %}
-
- <main role="main" class="container">
+  <main role="main" class="container">
     <div class="row">
-      <div class="col-md-8 mb-3 mt-1">
+      <div class="col-md-7 mb-3 mt-1">
         <div class="card">
           <div class="card-header">
-            {% if rename == "add" %}
-              Создать новую запись
-            {% elif rename == "edit" %}
-              Редактировать запись
-            {% endif %}
+              Создать новую группу
           </div> <!--"card-header" -->
           <div class="card-body">
             <form method="post" enctype="multipart/form-data">
@@ -39,24 +32,11 @@
                 </div> <!-- "col-md-11"-->
               </div> <!-- "form-group row"-->
               {% endfor %}
-            <div class="col-md-6 offset-md-7 mr-1">
-             {% if request.user == post.author %}
-                     <a class="btn btn-danger"
-                         href="{% url 'post_delete' id=post.id %}" role="button">
-                       Удалить Пост
-                     </a>
-                  {% endif %}
-
+            <div class="col-md-6 offset-md-8 mr-1">
                 <button type="submit" class="btn btn-primary ml-1 mr-1">
-                  {% if rename == "add" %}
-                    Создать запись
-                  {% elif rename == "edit" %}
-                    Сохранить
-                  {% endif %}
+                    Создать группу
                 </button>
-
               </div> <!-- "col-md-5 offset-md-11"-->
-
             </form>
           </div> <!-- "card-body"-->
         </div> <!-- "card"-->
