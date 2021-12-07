@@ -1,3 +1,52 @@
-# hw05_final
+### hw05_final
 
-[![CI](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/yandex-praktikum/hw05_final/actions/workflows/python-app.yml)
+Проект cоциальной сети, созданной на Django.Регистрация,авторизация пользователей.администрирование.
+создание постов с картинками и возможностью комментирования.Обьединения в группы,подписки на интересующего автора.
+Все было реализовано при помощи django
+
+### Как запустить проект
+
+Клонировать репозиторий и перейти в него в командной строке:
+
+```
+https://github.com/VadimKharyukov/hw05_final.git
+```
+
+```
+cd hw05_final
+```
+
+Создать и активировать виртуальное окружение:
+
+```
+python -m venv venv
+```
+
+```
+source env/bin/activate
+```
+
+```
+python -m pip install --upgrade pip
+```
+
+Установить зависимости из файла requirements.txt:
+
+```
+pip install -r requirements.txt
+```
+
+Выполнить миграции:
+
+```
+python manage.py migrate
+```
+
+Запустить проект:
+
+```
+python manage.py runserver
+``` 
+
+Дальше вам необходимо создать учетную запись,для полного доступа к проекту.
+Не зарегестрированные пользователи имеют ограниченный доступ к проекту лишь в формате чтения!
